@@ -36,11 +36,32 @@ public class KakaoController {
         return "redirect:/index.html";
     }
 
-    @RequestMapping(value="/katalk/logout")
+    @RequestMapping(value="/kakao/log_out")
     public String logout(HttpSession session) {
-        kakao.kakaoLogout((String)session.getAttribute("access_Token"));
-        session.removeAttribute("access_Token");
-        session.removeAttribute("userId");
+        kakao.Logout((String)session.getAttribute("access_token"));
+        session.invalidate(); //>> 로그아웃
+
+
+        //        String access_Token = (String)session.getAttribute("access_Token");
+//
+//        if(access_Token != null && !"".equals(access_Token)){
+//            kakao.kakaoLogout(access_Token);
+//            session.removeAttribute("access_Token");
+//            session.removeAttribute("userId");
+//        }else{
+//            System.out.println("access_Token is null");
+            // >> 엑세스 토큰 없다고 출력
+
+//        kakao.kakaoLogout((String)session.getAttribute("access_Token"));
+//        session.removeAttribute("access_Token");
+//        session.removeAttribute("userId"); >> 안됨
+        return "index";
+    }
+
+    @RequestMapping(value="/kakao/unlink")
+    public String unlink(HttpSession session) {
+        kakao.unlink((String)session.getAttribute("access_token"));
+        session.invalidate();
         return "index";
     }
 
