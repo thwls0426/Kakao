@@ -33,13 +33,15 @@ public class KakaoController {
 //            session.setAttribute("access_Token", access_Token);
 //        }
 
-        return "redirect:/index.html";
+        return "redirect:/success.html";
     }
 
     @RequestMapping(value="/kakao/log_out")
     public String logout(HttpSession session) {
         kakao.Logout((String)session.getAttribute("access_token"));
         session.invalidate(); //>> 로그아웃
+
+
 
 
         //        String access_Token = (String)session.getAttribute("access_Token");
@@ -55,14 +57,14 @@ public class KakaoController {
 //        kakao.kakaoLogout((String)session.getAttribute("access_Token"));
 //        session.removeAttribute("access_Token");
 //        session.removeAttribute("userId"); >> 안됨
-        return "index";
+        return "redirect:/logout_success.html";
     }
 
     @RequestMapping(value="/kakao/unlink")
     public String unlink(HttpSession session) {
         kakao.unlink((String)session.getAttribute("access_token"));
         session.invalidate();
-        return "index";
+        return "redirect:/unlink_success.html";
     }
 
 }
