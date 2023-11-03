@@ -36,7 +36,7 @@ public class KakaoController {
         return "redirect:/success.html";
     }
 
-    @RequestMapping(value="/kakao/log_out")
+    @RequestMapping(value="/oauth/logout")
     public String logout(HttpSession session) {
         kakao.Logout((String)session.getAttribute("access_token"));
         session.invalidate(); //>> 로그아웃

@@ -143,7 +143,7 @@ public class KakaoService {
     }
 
     public void unlink(String access_Token) {
-        String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+        String reqURL = "https://kauth.kakao.com/oauth/logout";
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
