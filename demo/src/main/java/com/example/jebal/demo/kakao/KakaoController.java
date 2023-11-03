@@ -16,13 +16,13 @@ public class KakaoController {
 
     private final KakaoService kakao;
 
-    @RequestMapping(value="/katalk")
+    @RequestMapping(value = "/katalk")
     public String index() {
 
         return "index";
     }
 
-    @RequestMapping(value="/katalk/callback")
+    @RequestMapping(value = "/katalk/callback")
     public String login(@RequestParam("code") String code, HttpSession session) {
         String access_Token = kakao.getAccessToken(code);
         HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
@@ -36,35 +36,34 @@ public class KakaoController {
         return "redirect:/success.html";
     }
 
-    @RequestMapping(value="/oauth/logout")
+    @RequestMapping(value = "/logout")
     public String logout(HttpSession session) {
-        kakao.Logout((String)session.getAttribute("access_token"));
-        session.invalidate(); //>> 로그아웃
+//        kakao.Logout((String)session.getAttribute("access_token"));
+//        session.invalidate(); //>> 로그아웃
 
 
+        String access_Token = (String) session.getAttribute("access_Token");
 
-
-        //        String access_Token = (String)session.getAttribute("access_Token");
-//
-//        if(access_Token != null && !"".equals(access_Token)){
-//            kakao.kakaoLogout(access_Token);
-//            session.removeAttribute("access_Token");
-//            session.removeAttribute("userId");
-//        }else{
-//            System.out.println("access_Token is null");
+        if (access_Token != null && !"".equals(access_Token)) {
+            kakao.Logout(access_Token);
+            session.removeAttribute("access_Token");
+            session.removeAttribute("userId");
+        } else {
+            System.out.println("access_Token is null");
             // >> 엑세스 토큰 없다고 출력
 
-//        kakao.kakaoLogout((String)session.getAttribute("access_Token"));
-//        session.removeAttribute("access_Token");
-//        session.removeAttribute("userId"); >> 안됨
-        return "redirect:/logout_success.html";
-    }
 
-    @RequestMapping(value="/kakao/unlink")
-    public String unlink(HttpSession session) {
-        kakao.unlink((String)session.getAttribute("access_token"));
-        session.invalidate();
-        return "redirect:/unlink_success.html";
-    }
+            return "redirect:/logout_success.html";
+        }
 
+//    @RequestMapping(value = "/kakao/unlink")
+//        public String unlink(HttpSession session){
+//            kakao.unlink((String) session.getAttribute("access_token"));
+//            session.invalidate();
+//            return "redirect:/unlink_success.html";
+//        }
+//
+//    }
+        return access_Token;
+    }
 }
