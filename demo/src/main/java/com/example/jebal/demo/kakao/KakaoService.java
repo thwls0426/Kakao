@@ -3,6 +3,7 @@ package com.example.jebal.demo.kakao;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
-
+@MapperScan
 @Service
 public class KakaoService {
 
@@ -76,11 +77,10 @@ public class KakaoService {
     @Autowired
     private KakaoRepository kr;
 
-
     public KakaoDTO getUserInfo (String access_Token) {
 
         //    요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
-        HashMap<String, Object> userInfo = new HashMap<>();
+        HashMap<String, Object> userInfo = new HashMap<String, Object>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         try {
             URL url = new URL(reqURL);
@@ -101,9 +101,9 @@ public class KakaoService {
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-//            String email = kakao_account.getAsJsonObject().get("email").getAsString();
+            String email = kakao_account.getAsJsonObject().get("email").getAsString();
             userInfo.put("nickname", nickname);
-//            userInfo.put("email", email);
+            userInfo.put("email", email);
 
         } catch (IOException e) {
 

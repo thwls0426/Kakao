@@ -1,6 +1,7 @@
 package com.example.jebal.demo.kakao;
 
 import lombok.Data;
+import org.springframework.web.bind.annotation.Mapping;
 
 @Data
 public class KakaoDTO {

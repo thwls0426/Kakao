@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 @RequiredArgsConstructor
 @Controller
+@MapperScan
 public class KakaoController {
 
     private final KakaoService kakao;
@@ -70,7 +71,7 @@ public class KakaoController {
     private HttpSession session;
 
     @RequestMapping(value="/katalk/login", method= RequestMethod.GET)
-    public String kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
+    public String kakaoLogin(@RequestParam(value = "code", required = false) String code, HttpSession session) throws Exception {
         System.out.println("#########" + code);
         String access_Token = kakao.getAccessToken(code);
         KakaoDTO userInfo = kakao.getUserInfo(access_Token);
@@ -78,15 +79,11 @@ public class KakaoController {
         System.out.println("###nickname#### : " + userInfo.getK_name());
         System.out.println("###email#### : " + userInfo.getK_email());
 
-        // 아래 코드가 추가되는 내용
         session.invalidate();
-        // 위 코드는 session객체에 담긴 정보를 초기화 하는 코드.
+
         session.setAttribute("kakaoN", userInfo.getK_name());
         session.setAttribute("kakaoE", userInfo.getK_email());
-        // 위 2개의 코드는 닉네임과 이메일을 session객체에 담는 코드
-        // jsp에서 ${sessionScope.kakaoN} 이런 형식으로 사용할 수 있다.
 
-        // 리턴값은 용도에 맞게 변경하세요~
         return "redirect:/login.html";
     }
 }
